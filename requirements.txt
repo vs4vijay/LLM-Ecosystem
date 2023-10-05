@@ -1,2 +1,5 @@
-transformers
 sentence_transformers
+scikit-learn
+openai
+python-dotenv
+langchain

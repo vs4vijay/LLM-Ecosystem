@@ -1,9 +1,4 @@
-# LLM-101
-
-
-A sentence embedding is a numerical representation of a sentence that captures its meaning and context.
-
-embeddings are basic building blocks of LLM
+# LLM-Ecosystem
 
 ## Installation
 
@@ -13,6 +8,18 @@ Pre-requisites:
 
 ```bash
 
-pip install sentence_transformers
+pip install -r requirements.txt
+
+```
+
+## Running
+
+- Copy `.env.example` to `.env` and fill in the values
+
+- Run the following command to start the server
+
+```bash
+
+python 4_llm_app.py
 
 ```

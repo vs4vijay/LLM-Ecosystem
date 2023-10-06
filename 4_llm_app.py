@@ -101,13 +101,21 @@ def get_chain():
 def main():
     print("[+] Running an LLM App")
     chain = get_chain()
-    query = input("Enter your query: ") or "Tell me about EngSysQueryLang?"
-    res = chain.run(
-        f"""
-            {query}
-        """
-    )
-    print(f"--- Chain Res: {res=}")
+
+    
+    while True:
+        query = input("Enter your query (or press enter to exit): ")
+
+        if not query:
+            break
+        
+        res = chain.run(
+            f"""
+                {query}
+            """
+        )
+        print(f"Chain Res: {res=}")
+        print('---')
 
 
 if __name__ == "__main__":

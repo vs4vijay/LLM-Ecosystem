@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "llm-ecosystem"
+version = "0.1.0"
+description = ""
+authors = ["vs4vijay <vs4vijay@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sentence-transformers = "^2.3.1"
+scikit-learn = "^1.4.1.post1"
+openai = "^1.12.0"
+python-dotenv = "^1.0.1"
+langchain = "0.1.6"
+qdrant-client = {extras = ["fastembed"], version = "^1.7.3"}
+langchain-community = "0.0.19"
+langchain-openai = "^0.0.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

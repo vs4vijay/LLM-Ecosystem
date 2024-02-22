@@ -23,3 +23,15 @@ pip install -r requirements.txt
 python 4_llm_app.py
 
 ```
+
+---
+
+## Advance
+
+```bash
+
+poetry shell
+
+poetry install
+
+```

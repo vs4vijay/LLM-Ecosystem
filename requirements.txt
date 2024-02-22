@@ -1,5 +1,10 @@
+
+python-dotenv
+openai
 sentence_transformers
 scikit-learn
-openai
-python-dotenv
-langchain
+qdrant-client[fastembed]
+langchain==0.1.6
+langchain-community==0.0.19
+langchain_openai==0.0.6
+unstructured==0.12.4

@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 
 from langchain.chains import RetrievalQA
-from langchain.chat_models import AzureChatOpenAI
-from langchain.document_loaders import DirectoryLoader, TextLoader
-from langchain.embeddings import SentenceTransformerEmbeddings
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate  # noqa: F401
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Qdrant
+from langchain_openai import AzureChatOpenAI
+from langchain_community.document_loaders import (
+    DirectoryLoader,
+    TextLoader,
+    UnstructuredPowerPointLoader,
+)  # noqa: F401
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_community.vectorstores import Qdrant
 from sentence_transformers import SentenceTransformer
 
 from config import config
@@ -31,10 +34,10 @@ def get_llm_model():
     llm = AzureChatOpenAI(
         openai_api_type=config.openai_api_type,
         openai_api_version=config.openai_api_version,
-        openai_api_base=config.openai_api_base,
-        openai_api_key=config.openai_api_key,
-        model_name=config.openai_model_name,
-        deployment_name=config.openai_deployment_name,
+        azure_endpoint=config.azure_openai_api_base,
+        api_key=config.openai_api_key,
+        model=config.openai_model_name,
+        azure_deployment=config.openai_deployment_name,
         verbose=True,
     )
 
@@ -45,12 +48,16 @@ def get_vector_store(namespace, embeddings):
     print("[+] Loading vector store: Qdrant")
 
     # Loading Text Documents
-    loader = TextLoader("./data/EngSysQueryLang.txt")
-    # loader = DirectoryLoader('./data', glob="*.txt", show_progress=True)
+    loader = TextLoader("./data/EngSysTest.txt")
+    # loader = DirectoryLoader(
+    #     "./data", glob="*",
+    #     # loader_cls=UnstructuredPowerPointLoader,
+    #     show_progress=True, use_multithreading=True
+    # )
     documents = loader.load()
 
     # Splitting Text Documents
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=10)
     texts = text_splitter.split_documents(documents)
 
     # Building Vector Store from Text Documents
@@ -92,7 +99,10 @@ def get_chain():
 
     retriever = vector_store.as_retriever()
     chain = RetrievalQA.from_chain_type(
-        llm=llm, chain_type="stuff", retriever=retriever, verbose=True
+        llm=llm,
+        retriever=retriever,
+        chain_type="stuff",
+        verbose=True,
     )
 
     return chain
@@ -102,20 +112,19 @@ def main():
     print("[+] Running an LLM App")
     chain = get_chain()
 
-    
     while True:
-        query = input("Enter your query (or press enter to exit): ")
+        query = input("[+] Enter your query (or press enter to exit): ")
 
         if not query:
             break
-        
-        res = chain.run(
+
+        res = chain.invoke(
             f"""
                 {query}
             """
         )
-        print(f"Chain Res: {res=}")
-        print('---')
+        print(f"[+] Chain Result: {res=}")
+        print("---")
 
 
 if __name__ == "__main__":

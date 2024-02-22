@@ -9,6 +9,9 @@ from langchain_community.document_loaders import (
     DirectoryLoader,
     TextLoader,
     UnstructuredPowerPointLoader,
+    UnstructuredPDFLoader,
+    PyPDFLoader,
+    PyPDFDirectoryLoader,
 )  # noqa: F401
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Qdrant
@@ -45,15 +48,18 @@ def get_llm_model():
 
 
 def get_vector_store(namespace, embeddings):
-    print("[+] Loading vector store: Qdrant")
+    print("[+] Loading docs using vector store: Qdrant")
 
     # Loading Text Documents
-    loader = TextLoader("./data/EngSysTest.txt")
-    # loader = DirectoryLoader(
-    #     "./data", glob="*",
-    #     # loader_cls=UnstructuredPowerPointLoader,
-    #     show_progress=True, use_multithreading=True
-    # )
+    # loader = TextLoader("./data/EngSysQueryLang.txt")
+    # loader = UnstructuredPowerPointLoader("./data/Prompt_Engineering_DOL.pptx")
+    # loader = UnstructuredPDFLoader("./data/Prompt_Engineering_DOL.pdf")
+    # loader = PyPDFLoader("./data/Prompt_Engineering_DOL.pdf")
+    loader = DirectoryLoader(
+        "./data", glob="*.pdf",
+        loader_cls=PyPDFLoader,
+        show_progress=True, use_multithreading=True,
+    )
     documents = loader.load()
 
     # Splitting Text Documents
@@ -121,7 +127,8 @@ def main():
         res = chain.invoke(
             f"""
                 {query}
-            """
+            """,
+            return_only_outputs=True,
         )
         print(f"[+] Chain Result: {res=}")
         print("---")

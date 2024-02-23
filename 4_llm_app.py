@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from langchain.chains import RetrievalQA
+from langchain.chains import RetrievalQA, ConversationChain
 from langchain.prompts import PromptTemplate  # noqa: F401
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import AzureChatOpenAI
@@ -16,6 +16,7 @@ from langchain_community.document_loaders import (
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Qdrant
 from sentence_transformers import SentenceTransformer
+from langchain.memory import VectorStoreRetrieverMemory
 
 from config import config
 
@@ -56,14 +57,16 @@ def get_vector_store(namespace, embeddings):
     # loader = UnstructuredPDFLoader("./data/Prompt_Engineering_DOL.pdf")
     # loader = PyPDFLoader("./data/Prompt_Engineering_DOL.pdf")
     loader = DirectoryLoader(
-        "./data", glob="*.pdf",
+        "./data",
+        glob="*.pdf",
         loader_cls=PyPDFLoader,
-        show_progress=True, use_multithreading=True,
+        show_progress=True,
+        use_multithreading=True,
     )
     documents = loader.load()
 
     # Splitting Text Documents
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=10)
+    text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=10)
     texts = text_splitter.split_documents(documents)
 
     # Building Vector Store from Text Documents
@@ -84,30 +87,35 @@ def get_chain():
     embeddings = get_embeddings()
     vector_store = get_vector_store("default", embeddings)
     llm = get_llm_model()
+    retriever = vector_store.as_retriever()
 
     # results = vector_store.similarity_search_with_score("EngSysLang")
     # print(f"[+] Similarity Search Results: {results=}")
 
-    # PromptTemplate(
-    #     input_variables=["name"],
-    #     template="""
-    #         ## Consider following:
-    #         ```
-    #         {name}
-    #         ```
-    #     """,
-    # )
-    # chain = LLMChain(
+    # chain = RetrievalQA.from_chain_type(
     #     llm=llm,
-    #     prompt=prompt,
+    #     retriever=retriever,
+    #     chain_type="stuff",
     #     verbose=True,
     # )
 
-    retriever = vector_store.as_retriever()
-    chain = RetrievalQA.from_chain_type(
+    prompt = PromptTemplate(
+        input_variables=["history", "input"],
+        template="""
+            You're a helpful assistant "DoL-Bot", here to answer the user's qeury. If you don't know the answer, 
+            just say "I don't know".
+
+            Relevant pieces of previous conversation:
+            {history}
+            
+            Answer my question: {input}
+        """,
+    )
+    memory = VectorStoreRetrieverMemory(retriever=retriever)
+    chain = ConversationChain(
         llm=llm,
-        retriever=retriever,
-        chain_type="stuff",
+        prompt=prompt,
+        memory=memory,
         verbose=True,
     )
 

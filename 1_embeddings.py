@@ -6,7 +6,7 @@ from fastembed import TextEmbedding  # noqa: F401
 
 
 def main():
-    print("[+] Running Script of Embeddings")
+    print("[+] Running program of Embeddings")
 
     embedding_model = "sentence-transformers/all-MiniLM-L6-v2"
     # embedding_model = "BAAI/bge-base-en"

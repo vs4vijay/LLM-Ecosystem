@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
 def main():
-    print("[+] Running Script of Semantic Search")
+    print("[+] Running program of Semantic Search")
     
     embedding_model = "sentence-transformers/all-MiniLM-L6-v2"
     print(f'[+] Loading embedding model: {embedding_model}')

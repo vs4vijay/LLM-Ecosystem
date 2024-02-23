@@ -11,7 +11,7 @@ client = QdrantClient(":memory:")
 
 
 def main():
-    print("[+] Running Script of Vector Store")
+    print("[+] Running program of Vector Store")
 
     # Prepare your documents, metadata, and IDs
     docs = [

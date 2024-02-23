@@ -1,10 +1,12 @@
 # LLM-Ecosystem
 
+Code for Embeddings, VectorStore, SemanticSearch, and RAG using Azure OpenAI.
+
 ## Installation
 
 Pre-requisites:
 
-- Python 3.9+ and pip
+- Python 3.10+ and pip
 
 ```bash
 
@@ -19,6 +21,14 @@ pip install -r requirements.txt
 - Run the following command to start the server
 
 ```bash
+
+python 0_llm.py
+
+python 1_embeddings.py
+
+python 2_semantic_search.py
+
+python 3_vectorstore.py
 
 python 4_llm_app.py
 

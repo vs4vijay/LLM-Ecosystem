@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from sentence_transformers import SentenceTransformer
-from fastembed import TextEmbedding  # noqa: F401
+from tabulate import tabulate
+# from fastembed import TextEmbedding  # noqa: F401
 
 
 def main():
@@ -33,8 +34,8 @@ def main():
 
     # Print the embeddings
     for sentence, embedding in zip(sentences, embeddings):
-        print("Sentence:", sentence)
-        print("Embedding:", embedding)
+        print("[+] Sentence:", sentence)
+        print("[+] Embedding:", embedding)
         print("---")
 
 

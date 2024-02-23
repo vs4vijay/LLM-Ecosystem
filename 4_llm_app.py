@@ -67,7 +67,7 @@ def get_vector_store(namespace, embeddings):
     documents = loader.load()
 
     # Splitting Text Documents
-    text_splitter = CharacterTextSplitter(chunk_size=2000, chunk_overlap=10)
+    text_splitter = CharacterTextSplitter(chunk_size=5000, chunk_overlap=100)
     texts = text_splitter.split_documents(documents)
 
     # Building Vector Store from Text Documents

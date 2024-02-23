@@ -5,14 +5,15 @@ from langchain.chains import RetrievalQA, ConversationChain
 from langchain.prompts import PromptTemplate  # noqa: F401
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import AzureChatOpenAI
+# noqa: F401
 from langchain_community.document_loaders import (
     DirectoryLoader,
-    TextLoader,
-    UnstructuredPowerPointLoader,
-    UnstructuredPDFLoader,
-    PyPDFLoader,
-    PyPDFDirectoryLoader,
-)  # noqa: F401
+    TextLoader,  # noqa: F401
+    UnstructuredPowerPointLoader, # noqa: F401
+    UnstructuredPDFLoader,  # noqa: F401
+    PyPDFLoader,  # noqa: F401
+    PyPDFDirectoryLoader,  # noqa: F401
+)  
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Qdrant
 from sentence_transformers import SentenceTransformer

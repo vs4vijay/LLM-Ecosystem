@@ -38,7 +38,7 @@ def get_llm_model():
     print(f"[+] Loading LLM model: {config.openai_model_name}")
     llm = AzureChatOpenAI(
         openai_api_type=config.openai_api_type,
-        openai_api_version=config.openai_api_version,
+        openai_api_version=config.azure_openai_api_version,
         azure_endpoint=config.azure_openai_api_base,
         api_key=config.openai_api_key,
         model=config.openai_model_name,

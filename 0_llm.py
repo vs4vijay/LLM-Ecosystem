@@ -17,7 +17,7 @@ def main():
 
     openai_client = AzureOpenAI(
         api_key=config.openai_api_key,
-        api_version=config.openai_api_version,
+        api_version=config.azure_openai_api_version,
         azure_endpoint=config.azure_openai_api_base,
     )
 

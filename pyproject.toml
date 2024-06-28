@@ -19,10 +19,20 @@ langchain-community = "0.0.19"
 langchain-openai = "^0.0.6"
 unstructured = {extras = ["all-docs"], version = "^0.12.4"}
 
-
 [tool.poetry.group.semantic_kernel.dependencies]
 semantic-kernel = "^0.5.1.dev0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "0.3.3"
+pytest = "8.1.1"
+coverage = "^7.4.4"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+indent-width = 2
+
+ignore = ["E123", "E133", "W503", "F401"]
